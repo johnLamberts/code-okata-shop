@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code-Okata Food Shop</title>
+  </head>
+  <body>
+    <style>
+      @font-face {
+        font-family: "Geist Sans";
+        src: url("https://assets.codepen.io/605876/GeistVF.ttf")
+          format("truetype");
+      }
+
+      :root {
+        --text: hsl(0 0% 0%);
+        --white: hsl(0 0% 100%);
+        --font-size: clamp(2rem, 8vw + 1rem, 10rem);
+        --padding: 15vh;
+        --nav: 5rem;
+        --fixer: #fdc566;
+        --clipped: hsl(310 80% 70%);
+        --marge: hsl(250 80% 70%);
+        --primary: hsl(0 0% 10%);
+        --secondary: #fd921e;
+      }
+
+      *,
+      *:after,
+      *:before {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "Geist Sans", "SF Pro Text", "SF Pro Icons", "AOS Icons",
+          "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui;
+        font-weight: 60;
+        overflow-x: hidden;
+      }
+
+      nav {
+        align-items: center;
+        background: hsl(0 0% 100% / 0.75);
+        backdrop-filter: blur(4px);
+        display: flex;
+        height: var(--nav);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 9999;
+        border-bottom: 2px solid #fdc566;
+        justify-content: space-around;
+      }
+
+      a {
+        color: var(--text);
+      }
+
+      a svg {
+        /* width: 48px; */
+      }
+
+      section {
+        background: white;
+        min-height: 100vh;
+      }
+
+      nav div,
+      main div {
+        background: var(--white);
+      }
+
+      header {
+        position: sticky;
+        top: calc(var(--padding) + var(--nav));
+        color: var(--white);
+        margin: 0;
+        text-transform: uppercase;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 10rem 0 0 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      h1 {
+        font-size: var(--font-size);
+        line-height: 0.75;
+        margin: 0;
+        font-weight: 120;
+        transition: color 0.5s;
+        translate: 0 4%;
+        color: var(--secondary);
+        /* color: #5c0505; */
+      }
+
+      main > section {
+        background: var(--white);
+        display: grid;
+        place-items: center;
+      }
+
+      main > section .content {
+        padding: 5rem 1rem;
+        text-align: center;
+      }
+
+      main > section .content p:nth-child(1) {
+        line-height: 5%;
+      }
+      main > section .content p:nth-child(2) {
+        font-size: 1rem;
+        width: 80%;
+        height: auto;
+        margin: 0 auto;
+      }
+
+      p {
+        font-size: 2rem;
+      }
+
+      section {
+        position: relative;
+        overflow: hidden;
+      }
+
+      img {
+        width: 100%;
+        filter: contrast(0.75) grayscale(1);
+        height: 150vh;
+        object-fit: cover;
+      }
+
+      .container > header {
+        position: fixed;
+        top: 0;
+        z-index: 0;
+        left: 50%;
+        translate: -50% 0;
+      }
+
+      .container > header h1 {
+        color: #880a1f;
+        font-weight: 200;
+        width: 100rem;
+      }
+
+      .container .header .bcc-header {
+        position: absolute;
+        top: 0;
+        height: 10rem;
+        width: 100%;
+      }
+
+      main {
+        transition: clip-path 0.5s;
+        clip-path: inset(
+          calc(var(--nav) + var(--font-size) + var(--padding)) 0 0 0
+        );
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+
+      body {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+      }
+
+      main > div {
+        background: hsl(0 0% 100% / calc(1 - var(--explode)));
+        clip-path: inset(
+          calc(
+              (var(--nav) + var(--font-size) + var(--padding) + var(--padding)) *
+                var(--explode)
+            )
+            0 0 0
+        );
+        transition: background 0.5s, clip-path 0.5s;
+      }
+
+      .container {
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background: white;
+        overflow-x: hidden;
+        position: relative;
+        z-index: 2;
+      }
+
+      .nav-items {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        background-color: transparent;
+      }
+
+      .nav-items li,
+      .nav-items li a {
+        list-style-type: none;
+        text-decoration: none;
+      }
+
+      .nav-items li a:hover,
+      .nav-items li a:active,
+      .nav-items li a:visited,
+      .nav-items li a:any-link {
+        text-decoration: underline;
+
+        text-decoration-style: underline;
+        text-decoration-color: var(--secondary);
+      }
+
+      /* BACKGROUND MOVE */
+      .button-background-move {
+        font-size: 0.8rem;
+        font-weight: 200;
+        letter-spacing: 1px;
+        padding: 0.7rem 1.3rem 0.7rem;
+        outline: 0;
+        border: 1px solid #5c0505;
+        cursor: pointer;
+        position: relative;
+        background-color: rgba(0, 0, 0, 0);
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+
+      .button-background-move:after {
+        content: "";
+        background-color: var(--secondary);
+        width: 100%;
+        z-index: -1;
+        position: absolute;
+        height: 100%;
+        top: 7px;
+        left: 7px;
+        transition: 0.2s;
+      }
+
+      .button-background-move:hover:after {
+        top: 0px;
+        left: 0px;
+      }
+
+      @media (min-width: 768px) {
+        .button-background-move {
+          padding: 0.8rem 2rem 0.7rem;
+        }
+      }
+
+      main > section .features-container p {
+        line-height: 5%;
+      }
+
+      section .features-container .card {
+        padding: 0 0 5rem 0;
+      }
+
+      .features-container .card .paragraph__d {
+        font-size: 1rem;
+        width: 80%;
+        height: auto;
+      }
+
+      .section__e {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .search__container {
+        padding-top: 64px;
+      }
+      .search__title {
+        font-size: 22px;
+        font-weight: 900;
+        text-align: center;
+        color: #ff8b88;
+      }
+      .search__input {
+        width: 46.5vw;
+        padding: 12px 20px;
+        background-color: transparent;
+        transition: transform 250ms ease-in-out;
+        font-size: 14px;
+        line-height: 18px;
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+        color: #575756;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-size: 18px 18px;
+        background-position: 95% center;
+        border-radius: 50px;
+        border: 1px solid #575756;
+        transition: all 250ms ease-in-out;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        z-index: 9999;
+      }
+      .search__input::placeholder {
+        color: color(#575756 a(0.8));
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+      }
+      .search__input:hover,
+      .search__input:focus {
+        padding: 12px 0;
+        outline: 0;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #575756;
+        border-radius: 0;
+        background-position: 100% center;
+      }
+
+      .carousel
+        > input[type="radio"]:nth-child(1):checked
+        ~ .carousel__prev
+        > label:nth-child(5),
+      .carousel
+        > input[type="radio"]:nth-child(1):checked
+        ~ .carousel__next
+        > label:nth-child(2),
+      .carousel
+        > input[type="radio"]:nth-child(2):checked
+        ~ .carousel__prev
+        > label:nth-child(1),
+      .carousel
+        > input[type="radio"]:nth-child(2):checked
+        ~ .carousel__next
+        > label:nth-child(3),
+      .carousel
+        > input[type="radio"]:nth-child(3):checked
+        ~ .carousel__prev
+        > label:nth-child(2),
+      .carousel
+        > input[type="radio"]:nth-child(3):checked
+        ~ .carousel__next
+        > label:nth-child(4),
+      .carousel
+        > input[type="radio"]:nth-child(4):checked
+        ~ .carousel__prev
+        > label:nth-child(3),
+      .carousel
+        > input[type="radio"]:nth-child(4):checked
+        ~ .carousel__next
+        > label:nth-child(5),
+      .carousel
+        > input[type="radio"]:nth-child(5):checked
+        ~ .carousel__prev
+        > label:nth-child(4),
+      .carousel
+        > input[type="radio"]:nth-child(5):checked
+        ~ .carousel__next
+        > label:nth-child(1) {
+        opacity: 1 !important;
+        z-index: 3;
+      }
+      .container__carousel {
+        width: 100%;
+        min-width: 20vw;
+      }
+      .carousel {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      .carousel > input[type="radio"] {
+        position: absolute;
+        left: 0;
+        opacity: 0;
+        top: 0;
+      }
+      .carousel
+        > input[type="radio"]:checked
+        ~ .carousel__items
+        .carousel__item,
+      .carousel > input[type="radio"]:checked ~ .carousel__prev > label,
+      .carousel > input[type="radio"]:checked ~ .carousel__next > label {
+        opacity: 0;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(1):checked
+        ~ .carousel__items
+        .carousel__item:nth-child(1) {
+        opacity: 1;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(1):checked
+        ~ .carousel__nav
+        > label:nth-child(1) {
+        background: #fdc566;
+        cursor: default;
+        pointer-events: none;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(2):checked
+        ~ .carousel__items
+        .carousel__item:nth-child(2) {
+        opacity: 1;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(2):checked
+        ~ .carousel__nav
+        > label:nth-child(2) {
+        background: #fdc566;
+        cursor: default;
+        pointer-events: none;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(3):checked
+        ~ .carousel__items
+        .carousel__item:nth-child(3) {
+        opacity: 1;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(3):checked
+        ~ .carousel__nav
+        > label:nth-child(3) {
+        background: #fdc566;
+        cursor: default;
+        pointer-events: none;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(4):checked
+        ~ .carousel__items
+        .carousel__item:nth-child(4) {
+        opacity: 1;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(4):checked
+        ~ .carousel__nav
+        > label:nth-child(4) {
+        background: #fdc566;
+        cursor: default;
+        pointer-events: none;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(5):checked
+        ~ .carousel__items
+        .carousel__item:nth-child(5) {
+        opacity: 1;
+      }
+      .carousel
+        > input[type="radio"]:nth-child(5):checked
+        ~ .carousel__nav
+        > label:nth-child(5) {
+        background: #fdc566;
+        cursor: default;
+        pointer-events: none;
+      }
+      .carousel__items {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        width: 100%;
+        height: 30rem;
+        position: relative;
+      }
+      .carousel__item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        transition: opacity 2s;
+        -webkit-transition: opacity 2s;
+      }
+      .carousel__item img {
+        width: 100%;
+        /* vertical-align: middle; */
+      }
+      .carousel__prev > label,
+      .carousel__next > label {
+        border: 1px solid #fff;
+        border-radius: 50%;
+        cursor: pointer;
+        display: block;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        transition: all 0.3s ease;
+        -webkit-transition: all 0.3s ease;
+        opacity: 0;
+        z-index: 2;
+      }
+      .carousel__prev > label:hover,
+      .carousel__next > label:hover,
+      .carousel__prev > label:focus,
+      .carousel__next > label:focus {
+        opacity: 0.5 !important;
+      }
+      .carousel__prev > label:before,
+      .carousel__next > label:before,
+      .carousel__prev > label:after,
+      .carousel__next > label:after {
+        content: "";
+        position: absolute;
+        width: inherit;
+        height: inherit;
+      }
+      .carousel__prev > label:before,
+      .carousel__next > label:before {
+        background: linear-gradient(
+            to top,
+            #fff 0%,
+            #fff 10%,
+            rgba(51, 51, 51, 0) 10%
+          ),
+          linear-gradient(to left, #fff 0%, #fff 10%, rgba(51, 51, 51, 0) 10%);
+        width: 60%;
+        height: 60%;
+        top: 20%;
+      }
+      .carousel__prev > label {
+        left: 2%;
+      }
+      .carousel__prev > label:before {
+        left: 35%;
+        top: 20%;
+        transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+      }
+      .carousel__next > label {
+        right: 2%;
+      }
+      .carousel__next > label:before {
+        left: 10%;
+        transform: rotate(315deg);
+        -webkit-transform: rotate(315deg);
+      }
+      .carousel__nav {
+        position: absolute;
+        bottom: 3%;
+        left: 0;
+        text-align: center;
+        width: 100%;
+        z-index: 3;
+      }
+      .carousel__nav > label {
+        border: 1px solid #fff;
+        display: inline-block;
+        border-radius: 50%;
+        cursor: pointer;
+        margin: 0 0.125%;
+        width: 20px;
+        height: 20px;
+      }
+
+      .grid-display {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+      .product-card {
+        background: #fff;
+        padding: 15px;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        position: relative;
+      }
+      .wsk-cp-img {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        transform: translate(-50%);
+        -webkit-transform: translate(-50%);
+        -ms-transform: translate(-50%);
+        -moz-transform: translate(-50%);
+        -o-transform: translate(-50%);
+        -khtml-transform: translate(-50%);
+        width: 100%;
+        padding: 15px;
+        transition: all 0.2s ease-in-out;
+      }
+      .wsk-cp-img img {
+        width: 100%;
+        transition: all 0.2s ease-in-out;
+        border-radius: 6px;
+      }
+      .product-card:hover .wsk-cp-img {
+        top: -10px;
+      }
+      .product-card:hover .wsk-cp-img img {
+        box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3),
+          0 15px 12px rgba(0, 0, 0, 0.22);
+      }
+      .wsk-cp-text {
+        padding-top: 150%;
+      }
+      .wsk-cp-text .category {
+        text-align: center;
+        font-size: 12px;
+        font-weight: light;
+        padding: 5px;
+        margin-bottom: 45px;
+        position: relative;
+        transition: all 0.2s ease-in-out;
+      }
+      .wsk-cp-text .category > * {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -khtml-transform: translate(-50%, -50%);
+      }
+      .wsk-cp-text .category > span {
+        padding: 12px 30px;
+        /* border: 1px solid #fd921e; */
+        background: #880a1f;
+        color: #fff;
+        box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3),
+          0 15px 12px rgba(0, 0, 0, 0.22);
+        border-radius: 27px;
+        transition: all 0.05s ease-in-out;
+      }
+      .product-card:hover .wsk-cp-text .category > span {
+        border-color: #ddd;
+        box-shadow: none;
+        padding: 11px 28px;
+      }
+      .product-card:hover .wsk-cp-text .category {
+        margin-top: 0px;
+      }
+      .wsk-cp-text .title-product {
+        text-align: center;
+      }
+      .wsk-cp-text .title-product h3 {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 15px auto;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 100%;
+      }
+      .wsk-cp-text .description-prod p {
+        margin: 0;
+      }
+    </style>
+    <div class="container">
+      <nav>
+        <svg
+          id="logo-16"
+          width="109"
+          height="43"
+          viewBox="0 0 109 43"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M64.9315 11.4284C62.1883 8.6852 58.9316 6.5091 55.3475 5.0245C51.7633 3.5399 47.9219 2.7758 44.0424 2.7758C40.1629 2.7758 36.3215 3.5399 32.7373 5.0245C29.1532 6.5091 25.8965 8.6852 23.1533 11.4284L44.0424 32.3174L64.9315 11.4284Z"
+            class="ccompli1"
+            fill="#FFD200"
+          ></path>
+          <path
+            d="M44.0686 32.3475C46.8118 35.0907 50.0684 37.2667 53.6526 38.7513C57.2367 40.2359 61.0782 41 64.9577 41C68.837 41 72.679 40.2359 76.263 38.7513C79.847 37.2667 83.104 35.0907 85.847 32.3475L64.9577 11.4584L44.0686 32.3475Z"
+            class="ccompli2"
+            fill="#06E07F"
+          ></path>
+          <path
+            d="M44.017 32.3429C41.2738 35.0861 38.0171 37.2621 34.433 38.7467C30.8488 40.2313 27.0074 40.9954 23.1279 40.9954C19.2484 40.9954 15.407 40.2313 11.8228 38.7467C8.2387 37.2621 4.982 35.0861 2.2388 32.3429L23.1279 11.4538L44.017 32.3429Z"
+            class="ccustom"
+            fill="#E3073C"
+          ></path>
+          <path
+            d="M64.9831 11.433C67.726 8.6898 70.983 6.5138 74.567 5.0292C78.151 3.5446 81.993 2.7805 85.872 2.7805C89.752 2.7805 93.593 3.5446 97.177 5.0292C100.761 6.5138 104.018 8.6898 106.761 11.433L85.872 32.3221L64.9831 11.433Z"
+            class="ccustom"
+            fill="#1F84EF"
+          ></path>
+        </svg>
+        <div class="nav-items">
+          <li>
+            <a href="#home">Shop</a>
+          </li>
+
+          <li>
+            <a href="#library">Stories</a>
+          </li>
+
+          <li>
+            <a href="#announcement">Promotion</a>
+          </li>
+
+          <li>
+            <a href="#announcement">Contact Us</a>
+          </li>
+        </div>
+
+        <button class="button-background-move" role="button">Login</button>
+      </nav>
+      <header aria-hidden="true">
+        <h1>Code-OKATA SHOP</h1>
+        <div class="search__container">
+          <input
+            class="search__input"
+            type="text"
+            placeholder="Search products by name, product code and category"
+          />
+        </div>
+      </header>
+      <main>
+        <div>
+          <header></header>
+          <section>
+            <img class="second" src="./first-bg.jpg" alt="" class="bg-first" />
+          </section>
+        </div>
+        <section>
+          <!-- <div class="content">
+            <p>Platform Features</p>
+            <p>
+              Explore the World of Knowledge with OPAC: Your Passport to
+              Empowerment. Connect, Learn, and Grow as You Navigate Our
+              Extensive Resources, Fostering Lifelong Learning for All.
+            </p>
+          </div>
+
+          <div class="features-container">
+            <div class="card card-color-0">
+              <div class="border"></div>
+              <img
+                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/deathtostock-00.jpg"
+              />
+              <p>Accessibility</p>
+              <p class="paragraph__d">
+                Ensure the e-library is accessible to all users, following web
+                accessibility standards.
+              </p>
+            </div>
+            <div class="card card-color-2">
+              <div class="border"></div>
+              <img
+                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/deathtostock-02.jpg"
+              />
+              <p>Book Discovery</p>
+              <p class="paragraph__d">
+                Enable easy navigation and intuitive search functionality for
+                finding books.
+              </p>
+            </div>
+
+            <div class="card card-color-1">
+              <div class="border"></div>
+              <img
+                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/deathtostock-01.jpg"
+              />
+              <p>User Friendly</p>
+              <p class="paragraph__d">
+                Experience that's effortless to navigate, catering to users of
+                all levels.
+              </p>
+            </div>
+          </div>
+
+          <div class="section__e">
+            <img
+              src="../bg3.jpg"
+              alt="Jhey walks across a stage at All Day Hey! 2022"
+            />
+          </div> -->
+
+          <div class="content">
+            <p>Code-Okata: Where Every Bite Tells a Delicious Story</p>
+            <p style="margin-top: 1rem">
+              A small food shop in our CodeSync.PH community
+            </p>
+          </div>
+
+          <!-- <div class="container__carousel">
+            <div class="carousel">
+              <input type="radio" id="carousel-1" name="carousel[]" checked />
+              <input type="radio" id="carousel-2" name="carousel[]" />
+              <input type="radio" id="carousel-3" name="carousel[]" />
+              <input type="radio" id="carousel-4" name="carousel[]" />
+              <input type="radio" id="carousel-5" name="carousel[]" />
+              <ul class="carousel__items">
+                <li class="carousel__item">
+                  <img src="./slide1.jpg" alt="" />
+                </li>
+                <li class="carousel__item">
+                  <img src="./slide2.jpg" alt="" />
+                </li>
+                <li class="carousel__item">
+                  <img src="./slide3.jpg" alt="" />
+                </li>
+                <li class="carousel__item">
+                  <img src="slide4.jpg" alt="" />
+                </li>
+                <li class="carousel__item">
+                  <img src="./slide6.jpg" alt="" />
+                </li>
+              </ul>
+              <div class="carousel__prev">
+                <label for="carousel-1"></label>
+                <label for="carousel-2"></label>
+                <label for="carousel-3"></label>
+                <label for="carousel-4"></label>
+                <label for="carousel-5"></label>
+              </div>
+              <div class="carousel__next">
+                <label for="carousel-1"></label>
+                <label for="carousel-2"></label>
+                <label for="carousel-3"></label>
+                <label for="carousel-4"></label>
+                <label for="carousel-5"></label>
+              </div>
+              <div class="carousel__nav">
+                <label for="carousel-1"></label>
+                <label for="carousel-2"></label>
+                <label for="carousel-3"></label>
+                <label for="carousel-4"></label>
+                <label for="carousel-5"></label>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="grid-display">
+            <div class="col-md-3">
+              <div class="product-card">
+                <div class="wsk-cp-img">
+                  <img src="./cat1.jpg" alt="Product" class="img-responsive" />
+                </div>
+                <div class="wsk-cp-text">
+                  <div class="category">
+                    <span>Snacks & Sweets</span>
+                  </div>
+                  <div class="title-product">
+                    <h3>My face not my heart</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="product-card">
+                <div class="wsk-cp-img">
+                  <img src="./cat2.jpg" alt="Product" class="img-responsive" />
+                </div>
+                <div class="wsk-cp-text">
+                  <div class="category">
+                    <span>Dairy & Eggs</span>
+                  </div>
+                  <div class="title-product">
+                    <h3>My face not my heart</h3>
+                  </div>
+                  <div class="description-prod">
+                    <p>
+                      Description Product tell me how to change playlist height
+                      size like 600px in html5 player. player good work now
+                      check this link
+                    </p>
+                  </div>
+                  <div class="card-footer">
+                    <div class="wcf-left">
+                      <span class="price">Rp500.000</span>
+                    </div>
+                    <div class="wcf-right">
+                      <a href="#" class="buy-btn"
+                        ><i class="zmdi zmdi-shopping-basket"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="product-card">
+                <div class="wsk-cp-img">
+                  <img src="./cat3.jpg" alt="Product" class="img-responsive" />
+                </div>
+                <div class="wsk-cp-text">
+                  <div class="category">
+                    <span>Meat & Seafood</span>
+                  </div>
+                  <div class="title-product">
+                    <h3>My face not my heart</h3>
+                  </div>
+                  <div class="description-prod">
+                    <p>
+                      Description Product tell me how to change playlist height
+                      size like 600px in html5 player. player good work now
+                      check this link
+                    </p>
+                  </div>
+                  <div class="card-footer">
+                    <div class="wcf-left">
+                      <span class="price">Rp500.000</span>
+                    </div>
+                    <div class="wcf-right">
+                      <a href="#" class="buy-btn"
+                        ><i class="zmdi zmdi-shopping-basket"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="product-card">
+                <div class="wsk-cp-img">
+                  <img src="./cat4.jpg" alt="Product" class="img-responsive" />
+                </div>
+                <div class="wsk-cp-text">
+                  <div class="category">
+                    <span>Condiments & Sauces</span>
+                  </div>
+                  <div class="title-product">
+                    <h3>My face not my heart</h3>
+                  </div>
+                  <div class="description-prod">
+                    <p>
+                      Description Product tell me how to change playlist height
+                      size like 600px in html5 player. player good work now
+                      check this link
+                    </p>
+                  </div>
+                  <div class="card-footer">
+                    <div class="wcf-left">
+                      <span class="price">Rp500.000</span>
+                    </div>
+                    <div class="wcf-right">
+                      <a href="#" class="buy-btn"
+                        ><i class="zmdi zmdi-shopping-basket"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br />
+          <hr />
+          <hr />
+        </section>
+        <footer>
+          <div class="content">Code-Okata &copy; 2024. All rights reserved</div>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>
