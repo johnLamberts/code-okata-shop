@@ -540,16 +540,16 @@
       .carousel__prev > label:before {
         left: 35%;
         top: 20%;
-        transform: rotate(135deg);
-        -webkit-transform: rotate(135deg);
+        /* transform: rotate(135deg); */
+        /* -webkit-transform: rotate(135deg); */
       }
       .carousel__next > label {
         right: 2%;
       }
       .carousel__next > label:before {
         left: 10%;
-        transform: rotate(315deg);
-        -webkit-transform: rotate(315deg);
+        /* transform: rotate(315deg); */
+        /* -webkit-transform: rotate(315deg); */
       }
       .carousel__nav {
         position: absolute;
@@ -567,6 +567,11 @@
         margin: 0 0.125%;
         width: 20px;
         height: 20px;
+      }
+
+      .grid-display-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
       }
 
       .grid-display {
@@ -640,9 +645,9 @@
         transition: all 0.05s ease-in-out;
       }
       .product-card:hover .wsk-cp-text .category > span {
-        border-color: #ddd;
+        /* border-color: #ddd;
         box-shadow: none;
-        padding: 11px 28px;
+        padding: 11px 28px; */
       }
       .product-card:hover .wsk-cp-text .category {
         margin-top: 0px;
@@ -983,6 +988,140 @@
           <br />
           <hr />
           <hr />
+
+          <div class="grid-display-card">
+            <div class="col-md-3">
+              <div class="product-card">
+                <div class="wsk-cp-img">
+                  <img
+                    loading="lazy"
+                    src="./cat1.jpg"
+                    alt="Product"
+                    class="img-responsive"
+                  />
+                </div>
+                <div class="wsk-cp-text">
+                  <div class="category">
+                    <span>Snacks & Sweet</span>
+                  </div>
+                  <div class="title-product">
+                    <h3>My face not my heart</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="product-card">
+                <div class="wsk-cp-img">
+                  <img
+                    loading="lazy"
+                    src="./cat2.jpg"
+                    alt="Product"
+                    class="img-responsive"
+                  />
+                </div>
+                <div class="wsk-cp-text">
+                  <div class="category">
+                    <span>Dairy & Eggs</span>
+                  </div>
+                  <div class="title-product">
+                    <h3>My face not my heart</h3>
+                  </div>
+                  <div class="description-prod">
+                    <p>
+                      Description Product tell me how to change playlist height
+                      size like 600px in html5 player. player good work now
+                      check this link
+                    </p>
+                  </div>
+                  <div class="card-footer">
+                    <div class="wcf-left">
+                      <span class="price">Rp500.000</span>
+                    </div>
+                    <div class="wcf-right">
+                      <a href="#" class="buy-btn"
+                        ><i class="zmdi zmdi-shopping-basket"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="product-card">
+                <div class="wsk-cp-img">
+                  <img
+                    loading="lazy"
+                    src="./cat3.jpg"
+                    alt="Product"
+                    class="img-responsive"
+                  />
+                </div>
+                <div class="wsk-cp-text">
+                  <div class="category">
+                    <span>Meat & Seafood</span>
+                  </div>
+                  <div class="title-product">
+                    <h3>My face not my heart</h3>
+                  </div>
+                  <div class="description-prod">
+                    <p>
+                      Description Product tell me how to change playlist height
+                      size like 600px in html5 player. player good work now
+                      check this link
+                    </p>
+                  </div>
+                  <div class="card-footer">
+                    <div class="wcf-left">
+                      <span class="price">Rp500.000</span>
+                    </div>
+                    <div class="wcf-right">
+                      <a href="#" class="buy-btn"
+                        ><i class="zmdi zmdi-shopping-basket"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="product-card">
+                <div class="wsk-cp-img">
+                  <img
+                    loading="lazy"
+                    src="./cat4.jpg"
+                    alt="Product"
+                    class="img-responsive"
+                  />
+                </div>
+                <div class="wsk-cp-text">
+                  <div class="category">
+                    <span>Condiments & Sauces</span>
+                  </div>
+                  <div class="title-product">
+                    <h3>My face not my heart</h3>
+                  </div>
+                  <div class="description-prod">
+                    <p>
+                      Description Product tell me how to change playlist height
+                      size like 600px in html5 player. player good work now
+                      check this link
+                    </p>
+                  </div>
+                  <div class="card-footer">
+                    <div class="wcf-left">
+                      <span class="price">Rp500.000</span>
+                    </div>
+                    <div class="wcf-right">
+                      <a href="#" class="buy-btn"
+                        ><i class="zmdi zmdi-shopping-basket"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
         <footer>
           <div class="content">Code-Okata &copy; 2024. All rights reserved</div>
